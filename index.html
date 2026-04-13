@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Avaliação SIPAT</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+}
+
+.container {
+  max-width: 700px;
+  margin: 30px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin-top: 10px;
+}
+
+select, textarea, button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+}
+
+button {
+  background: #007bff;
+  color: white;
+  border: none;
+}
+
+.success {
+  color: green;
+  text-align: center;
+  display: none;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+<h1>📋 Avaliação da SIPAT</h1>
+
+<form id="form">
+
+<label>Nota Geral</label>
+<select required></select>
+
+<label>Cinema</label>
+<select required></select>
+
+<label>Dinâmica</label>
+<select required></select>
+
+<label>Palestra</label>
+<select required></select>
+
+<label>Teatro</label>
+<select required></select>
+
+<label>Quiz</label>
+<select required></select>
+
+<label>Quarto do Medo</label>
+<select required></select>
+
+<label>Treinamento APH</label>
+<select required></select>
+
+<label>Combate a Incêndio</label>
+<select required></select>
+
+<label>DDS</label>
+<select required></select>
+
+<label>Comentário</label>
+<textarea></textarea>
+
+<button type="submit">Enviar</button>
+
+<p class="success" id="msg">✅ Enviado com sucesso!</p>
+
+</form>
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCBcl1556IaLON36v9NU27MKW4sIoKcTIY",
+  authDomain: "sipat-c61ce.firebaseapp.com",
+  projectId: "sipat-c61ce",
+  storageBucket: "sipat-c61ce.firebasestorage.app",
+  messagingSenderId: "594151430587",
+  appId: "1:594151430587:web:8b00c19d39143a535ecc9e"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// criar opções
+document.querySelectorAll("select").forEach(select => {
+  for (let i = 1; i <= 10; i++) {
+    let op = document.createElement("option");
+    op.value = i;
+    op.text = i;
+    select.appendChild(op);
+  }
+});
+
+const form = document.getElementById("form");
+const msg = document.getElementById("msg");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const dados = {
+    geral: form[0].value,
+    cinema: form[1].value,
+    dinamica: form[2].value,
+    palestra: form[3].value,
+    teatro: form[4].value,
+    quiz: form[5].value,
+    medo: form[6].value,
+    aph: form[7].value,
+    incendio: form[8].value,
+    dds: form[9].value,
+    comentario: form[10].value,
+    data: new Date()
+  };
+
+  await addDoc(collection(db, "avaliacoes"), dados);
+
+  msg.style.display = "block";
+  form.reset();
+});
+
+</script>
+
+</body>
+</html>
